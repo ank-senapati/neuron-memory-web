@@ -1,44 +1,29 @@
-# Step 1: Import necessary libraries
-from sentence_transformers import SentenceTransformer, util
 import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
+# Initialize the TF-IDF vectorizer
+vectorizer = TfidfVectorizer(max_features=1000)
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-def generate_embedding(text, normalize=True):
+def generate_embedding(text):
     """
-    Generate an embedding for the given text using the SentenceTransformer model.
-    
-    Args:
-        text (str): The input text to be embedded.
-        
-    Returns:
-        np.ndarray: The generated embedding vector.
+    Generate a TF-IDF embedding for the given text.
     """
+    # Fit and transform the text
+    embedding = vectorizer.fit_transform([text]).toarray()[0]
     
-    # # Step 3: Define the summary text (this should be the output of your summarization model)
-    # summary_text = (
-    # """ Meeting Summary: Google Maps API Integration
-
-    # Overview:
-    # Discussion focused on integrating Google Maps API for location-based business search and routing.
-
-    # Key Concepts:
-    # - Enabled proper billing and permissions for API functionality.
-    # - Users can now search for nearby businesses and get visual routes.
-
-    # Next Steps:
-    # - Customize map markers with branded icons.
-    # - Implement filters for categories (e.g., restaurants, stores).
-    # """
-    # )
-
-    embedding = model.encode(text, convert_to_tensor=True)
-
-    embedding_normalized = embedding / np.linalg.norm(embedding)
-
-    # Step 5: Output the results
-    print("Embedding vector shape:", embedding.shape)
-    print("Normalized embedding (first 5 values):", embedding_normalized[:5])
-
+    # Normalize the embedding
+    norm = np.linalg.norm(embedding)
+    if norm > 0:
+        embedding = embedding / norm
+    
+    print(f"Generated embedding with shape: {embedding.shape}")
+    print(f"First 5 values of normalized embedding: {embedding[:5]}")
+    
     return embedding.tolist()
+
+def compute_similarity(embedding1, embedding2):
+    """
+    Compute cosine similarity between two embeddings.
+    """
+    return cosine_similarity([embedding1], [embedding2])[0][0]

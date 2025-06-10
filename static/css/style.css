@@ -1,0 +1,55 @@
+.note-card {
+    transition: all 0.3s ease;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.graph-node {
+    cursor: pointer;
+}
+
+.graph-node:hover {
+    stroke: #4a5568;
+    stroke-width: 2px;
+}
+
+.graph-link {
+    stroke: #cbd5e0;
+    stroke-opacity: 0.6;
+}
+
+.graph-link:hover {
+    stroke: #4a5568;
+    stroke-opacity: 1;
+}
+
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #4a5568;
+}
+
+.loading::before {
+    content: "Loading...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
